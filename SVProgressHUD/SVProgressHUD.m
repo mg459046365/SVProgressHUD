@@ -26,9 +26,9 @@ NSString *const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKe
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10.0f;
 static const CGFloat SVProgressHUDUndefinedProgress = -1;
 static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
-static const CGFloat SVProgressHUDVerticalSpacing = 12.0f;
-static const CGFloat SVProgressHUDHorizontalSpacing = 24.0f;
-static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
+//static const CGFloat SVProgressHUDVerticalSpacing = 12.0f;
+//static const CGFloat SVProgressHUDHorizontalSpacing = 24.0f;
+//static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 
 @interface SVProgressHUD ()
@@ -156,6 +156,18 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)setMultiLineCornerRadius:(CGFloat)cornerRadius {
     [self sharedView].multiLineCornerRadius = cornerRadius;
+}
+
++ (void)setVerticalSpacing:(CGFloat)spacing {
+    [self sharedView].verticalSpacing = spacing;
+}
+
++ (void)setHorizontalSpacing:(CGFloat)spacing {
+    [self sharedView].horizontalSpacing = spacing;
+}
+
++ (void)setImageLabelSpacing:(CGFloat)spacing {
+    [self sharedView].imageLabelSpacing = spacing;
 }
 
 + (void)setBorderColor:(nonnull UIColor *)color {
@@ -371,7 +383,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _minimumSize = CGSizeZero;
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 
-        _imageViewSize = CGSizeMake(28.0f, 28.0f);
+        _imageViewSize = CGSizeMake(24.0f, 24.0f);
         _shouldTintImages = YES;
 
         NSBundle *imageBundle = [SVProgressHUD imageBundle];
@@ -390,8 +402,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _ringRadius = 18.0f;
         _ringNoTextRadius = 24.0f;
 
-        _cornerRadius = 14.0f;
+        _cornerRadius = 18.0f;
         _multiLineCornerRadius = -1.0f;
+        _verticalSpacing = 12.0f;
+        _horizontalSpacing = 16.0f;
+        _imageLabelSpacing = 8.0f;
 
         _graceTimeInterval = 0.0f;
         _minimumDismissTimeInterval = 5.0;
@@ -426,7 +441,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     CGFloat labelWidth = 0.0f;
 
     if (self.statusLabel.text) {
-        CGSize constraintSize = CGSizeMake(260.0f, 300.0f);
+        CGSize constraintSize = CGSizeMake(228.0f, 300.0f);
         labelRect = [self.statusLabel.text boundingRectWithSize:constraintSize
                                                         options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin)
                                                      attributes:@{ NSFontAttributeName: self.statusLabel.font }
@@ -450,14 +465,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
 
     // |-spacing-content-spacing-|
-    hudWidth = SVProgressHUDHorizontalSpacing + MAX(labelWidth, contentWidth) + SVProgressHUDHorizontalSpacing;
+    hudWidth = self.horizontalSpacing + MAX(labelWidth, contentWidth) + self.horizontalSpacing;
 
     // |-spacing-content-(labelSpacing-label-)spacing-|
-    hudHeight = SVProgressHUDVerticalSpacing + labelHeight + contentHeight + SVProgressHUDVerticalSpacing;
+    hudHeight = self.verticalSpacing + labelHeight + contentHeight + self.verticalSpacing;
 
     if (self.statusLabel.text && (imageUsed || progressUsed)) {
         // Add spacing if both content and label are used
-        hudHeight += SVProgressHUDLabelSpacing;
+        hudHeight += self.imageLabelSpacing;
     }
 
     // Update values on subviews
@@ -477,7 +492,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     CGFloat centerY;
 
     if (self.statusLabel.text) {
-        CGFloat yOffset = MAX(SVProgressHUDVerticalSpacing, (self.minimumSize.height - contentHeight - SVProgressHUDLabelSpacing - labelHeight) / 2.0f);
+        CGFloat yOffset = MAX(self.verticalSpacing, (self.minimumSize.height - contentHeight - self.imageLabelSpacing - labelHeight) / 2.0f);
         centerY = yOffset + contentHeight / 2.0f;
     } else {
         centerY = CGRectGetMidY(self.hudView.bounds);
@@ -493,7 +508,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
     // Label
     if (imageUsed || progressUsed) {
-        centerY = CGRectGetMaxY(imageUsed ? self.imageView.frame : self.indefiniteAnimatedView.frame) + SVProgressHUDLabelSpacing + labelHeight / 2.0f;
+        centerY = CGRectGetMaxY(imageUsed ? self.imageView.frame : self.indefiniteAnimatedView.frame) + self.imageLabelSpacing + labelHeight / 2.0f;
     } else {
         centerY = CGRectGetMidY(self.hudView.bounds);
     }

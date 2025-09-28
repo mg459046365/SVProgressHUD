@@ -105,6 +105,9 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 /// or HUD view Height greater than minimumSize.height
 /// @discussion Default: 14 pt.
 @property (assign, nonatomic) CGFloat multiLineCornerRadius UI_APPEARANCE_SELECTOR;
+@property (assign, nonatomic) CGFloat verticalSpacing UI_APPEARANCE_SELECTOR;
+@property (assign, nonatomic) CGFloat horizontalSpacing UI_APPEARANCE_SELECTOR;
+@property (assign, nonatomic) CGFloat imageLabelSpacing UI_APPEARANCE_SELECTOR;
 
 /// Font used for text within the HUD.
 /// @discussion Default: [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline].
@@ -224,6 +227,9 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 /// @param cornerRadius Desired corner radius.
 + (void)setCornerRadius:(CGFloat)cornerRadius;
 + (void)setMultiLineCornerRadius:(CGFloat)cornerRadius;
++ (void)setVerticalSpacing:(CGFloat)spacing;
++ (void)setHorizontalSpacing:(CGFloat)spacing;
++ (void)setImageLabelSpacing:(CGFloat)spacing;
 
 /// Sets the border color for the HUD.
 /// @param color Desired border color.
