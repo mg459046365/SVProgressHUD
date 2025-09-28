@@ -5,29 +5,29 @@
 //  Copyright (c) 2011-2023 Sam Vermette and contributors. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
+#import <UIKit/UIKit.h>
 
-extern NSString * _Nonnull const SVProgressHUDDidReceiveTouchEventNotification;
-extern NSString * _Nonnull const SVProgressHUDDidTouchDownInsideNotification;
-extern NSString * _Nonnull const SVProgressHUDWillDisappearNotification;
-extern NSString * _Nonnull const SVProgressHUDDidDisappearNotification;
-extern NSString * _Nonnull const SVProgressHUDWillAppearNotification;
-extern NSString * _Nonnull const SVProgressHUDDidAppearNotification;
+extern NSString *_Nonnull const SVProgressHUDDidReceiveTouchEventNotification;
+extern NSString *_Nonnull const SVProgressHUDDidTouchDownInsideNotification;
+extern NSString *_Nonnull const SVProgressHUDWillDisappearNotification;
+extern NSString *_Nonnull const SVProgressHUDDidDisappearNotification;
+extern NSString *_Nonnull const SVProgressHUDWillAppearNotification;
+extern NSString *_Nonnull const SVProgressHUDDidAppearNotification;
 
-extern NSString * _Nonnull const SVProgressHUDStatusUserInfoKey;
+extern NSString *_Nonnull const SVProgressHUDStatusUserInfoKey;
 
 /// Represents the appearance style of the HUD.
 typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
     /// White HUD with black text. HUD background will be blurred.
     SVProgressHUDStyleLight NS_SWIFT_NAME(light),
-    
+
     /// Black HUD with white text. HUD background will be blurred.
     SVProgressHUDStyleDark NS_SWIFT_NAME(dark),
-    
+
     /// Uses the fore- and background color properties.
     SVProgressHUDStyleCustom NS_SWIFT_NAME(custom),
-    
+
     /// Automatically switch between light or dark mode appearance.
     SVProgressHUDStyleAutomatic NS_SWIFT_NAME(automatic)
 };
@@ -36,16 +36,16 @@ typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
 typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
     /// Allow user interactions while HUD is displayed.
     SVProgressHUDMaskTypeNone NS_SWIFT_NAME(none) = 1,
-    
+
     /// Don't allow user interactions with background objects.
     SVProgressHUDMaskTypeClear NS_SWIFT_NAME(clear),
-    
+
     /// Don't allow user interactions and dim the UI behind the HUD (as in iOS 7+).
     SVProgressHUDMaskTypeBlack NS_SWIFT_NAME(black),
-    
+
     /// Don't allow user interactions and dim the UI with an UIAlertView-like background gradient (as in iOS 6).
     SVProgressHUDMaskTypeGradient NS_SWIFT_NAME(gradient),
-    
+
     /// Don't allow user interactions and dim the UI behind the HUD with a custom color.
     SVProgressHUDMaskTypeCustom NS_SWIFT_NAME(custom)
 };
@@ -54,7 +54,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
     /// Custom flat animation (indefinite animated ring).
     SVProgressHUDAnimationTypeFlat NS_SWIFT_NAME(flat),
-    
+
     /// iOS native UIActivityIndicatorView.
     SVProgressHUDAnimationTypeNative NS_SWIFT_NAME(native)
 };
@@ -100,6 +100,11 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 /// Corner radius of the HUD view.
 /// @discussion Default: 14 pt.
 @property (assign, nonatomic) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;
+
+/// Corner radius of the HUD view，when multiLineText or imageWithText
+/// or HUD view Height greater than minimumSize.height
+/// @discussion Default: 14 pt.
+@property (assign, nonatomic) CGFloat multiLineCornerRadius UI_APPEARANCE_SELECTOR;
 
 /// Font used for text within the HUD.
 /// @discussion Default: [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline].
@@ -197,7 +202,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 /// Sets the container view for the HUD.
 /// @param containerView The view to contain the HUD.
-+ (void)setContainerView:(nullable UIView*)containerView;
++ (void)setContainerView:(nullable UIView *)containerView;
 
 /// Sets the minimum size for the HUD.
 /// @param minimumSize The minimum size for the HUD.
@@ -218,10 +223,11 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 /// Sets the corner radius for the HUD.
 /// @param cornerRadius Desired corner radius.
 + (void)setCornerRadius:(CGFloat)cornerRadius;
++ (void)setMultiLineCornerRadius:(CGFloat)cornerRadius;
 
 /// Sets the border color for the HUD.
 /// @param color Desired border color.
-+ (void)setBorderColor:(nonnull UIColor*)color;
++ (void)setBorderColor:(nonnull UIColor *)color;
 
 /// Sets the border width for the HUD.
 /// @param width Desired border width.
@@ -229,31 +235,31 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 /// Sets the font for the HUD's text.
 /// @param font Desired font for the text.
-+ (void)setFont:(nonnull UIFont*)font;
++ (void)setFont:(nonnull UIFont *)font;
 
 /// Sets the foreground color for the HUD.
 /// @param color Desired foreground color.
 /// @discussion These implicitly set the HUD's style to `SVProgressHUDStyleCustom`.
-+ (void)setForegroundColor:(nonnull UIColor*)color;
++ (void)setForegroundColor:(nonnull UIColor *)color;
 
 /// Sets the foreground image color for the HUD.
 /// @param color Desired color for the image.
 /// @discussion These implicitly set the HUD's style to `SVProgressHUDStyleCustom`.
-+ (void)setForegroundImageColor:(nullable UIColor*)color;
++ (void)setForegroundImageColor:(nullable UIColor *)color;
 
 /// Sets the background color for the HUD.
 /// @param color Desired background color.
 /// @discussion These implicitly set the HUD's style to `SVProgressHUDStyleCustom`.
-+ (void)setBackgroundColor:(nonnull UIColor*)color;
++ (void)setBackgroundColor:(nonnull UIColor *)color;
 
 /// Sets a custom blur effect for the HUD view.
 /// @param blurEffect Desired blur effect.
 /// @discussion These implicitly set the HUD's style to `SVProgressHUDStyleCustom`.
-+ (void)setHudViewCustomBlurEffect:(nullable UIBlurEffect*)blurEffect;
++ (void)setHudViewCustomBlurEffect:(nullable UIBlurEffect *)blurEffect;
 
 /// Sets the background layer color for the HUD.
 /// @param color Desired color for the background layer.
-+ (void)setBackgroundLayerColor:(nonnull UIColor*)color;
++ (void)setBackgroundLayerColor:(nonnull UIColor *)color;
 
 /// Sets the size for the HUD's image view.
 /// @param size Desired size for the image view.
@@ -265,19 +271,19 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 /// Sets the info image for the HUD.
 /// @param image The desired info image.
-+ (void)setInfoImage:(nonnull UIImage*)image;
++ (void)setInfoImage:(nonnull UIImage *)image;
 
 /// Sets the success image for the HUD.
 /// @param image The desired success image.
-+ (void)setSuccessImage:(nonnull UIImage*)image;
++ (void)setSuccessImage:(nonnull UIImage *)image;
 
 /// Sets the error image for the HUD.
 /// @param image The desired error image.
-+ (void)setErrorImage:(nonnull UIImage*)image;
++ (void)setErrorImage:(nonnull UIImage *)image;
 
 /// Sets the view for extensions.
 /// @param view The desired view for extensions.
-+ (void)setViewForExtension:(nonnull UIView*)view;
++ (void)setViewForExtension:(nonnull UIView *)view;
 
 /// Sets the grace time interval for the HUD.
 /// @param interval Desired grace time interval.
@@ -319,7 +325,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 /// Shows the HUD with a provided status message.
 /// @param status The message to be displayed alongside the HUD.
-+ (void)showWithStatus:(nullable NSString*)status;
++ (void)showWithStatus:(nullable NSString *)status;
 
 /// Display methods to show progress on the HUD.
 
@@ -330,28 +336,28 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 /// Shows the HUD with a progress indicator and a provided status message.
 /// @param progress A float value between 0.0 and 1.0 indicating the progress.
 /// @param status The message to be displayed alongside the progress indicator.
-+ (void)showProgress:(float)progress status:(nullable NSString*)status;
++ (void)showProgress:(float)progress status:(nullable NSString *)status;
 
 /// Updates the current status of the loading HUD.
 /// @param status The new status message to update the HUD with.
-+ (void)setStatus:(nullable NSString*)status;
++ (void)setStatus:(nullable NSString *)status;
 
 /// Shows an info status with the provided message.
 /// @param status The info message to be displayed.
-+ (void)showInfoWithStatus:(nullable NSString*)status;
++ (void)showInfoWithStatus:(nullable NSString *)status;
 
 /// Shows a success status with the provided message.
 /// @param status The success message to be displayed.
-+ (void)showSuccessWithStatus:(nullable NSString*)status;
++ (void)showSuccessWithStatus:(nullable NSString *)status;
 
 /// Shows an error status with the provided message.
 /// @param status The error message to be displayed.
-+ (void)showErrorWithStatus:(nullable NSString*)status;
++ (void)showErrorWithStatus:(nullable NSString *)status;
 
 /// Shows a custom image with the provided status message.
 /// @param image The custom image to be displayed.
 /// @param status The message to accompany the custom image.
-+ (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status;
++ (void)showImage:(nonnull UIImage *)image status:(nullable NSString *)status;
 
 /// Sets the offset from the center for the HUD.
 /// @param offset The UIOffset value indicating how much the HUD should be offset from its center position.
@@ -386,7 +392,6 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 /// Calculates the display duration based on a given string's length.
 /// @param string The string whose length determines the display duration.
 /// @return A time interval representing the display duration.
-+ (NSTimeInterval)displayDurationForString:(nullable NSString*)string;
++ (NSTimeInterval)displayDurationForString:(nullable NSString *)string;
 
 @end
-
