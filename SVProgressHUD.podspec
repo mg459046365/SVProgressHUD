@@ -14,17 +14,7 @@ Pod::Spec.new do |s|
   s.framework    = 'QuartzCore'
   s.requires_arc = true
 
-  s.default_subspec = 'Core'
-
-  s.subspec 'Core' do |core|
-    core.source_files = 'SVProgressHUD/*.{h,m}'
-    core.resources = ['SVProgressHUD/SVProgressHUD.bundle']
-    core.resource_bundles = {'SVProgressHUD' => ['SVProgressHUD/PrivacyInfo.xcprivacy']}
-  end
-
-  s.subspec 'AppExtension' do |ext|
-    ext.source_files = 'SVProgressHUD/*.{h,m}'
-    ext.resource_bundles = {'AppExtension' => ['SVProgressHUD/PrivacyInfo.xcprivacy']}
-    ext.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'SV_APP_EXTENSIONS=1' }
-  end
+  s.source_files = 'SVProgressHUD/*.{h,m}'
+  s.resources = ['SVProgressHUD/SVProgressHUD.bundle']
+  s.resource_bundles = {'SVProgressHUDPrivacy' => ['SVProgressHUD/PrivacyInfo.xcprivacy']}
 end
